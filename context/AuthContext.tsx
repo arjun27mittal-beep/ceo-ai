@@ -89,10 +89,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       }
       return { error: null };
-    } catch (err) {
-      return { error: "Network error. Please check your connection." };
-    }
-  };
+    } catch (err: any) {
+  console.error("[Auth] signIn error:", err?.message, err?.code);
+  return { error: `Network error: ${err?.message || "check connection"}` };
+}
 
   const signOut = async () => {
     try {
