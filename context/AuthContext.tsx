@@ -66,10 +66,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       }
       return { error: null };
-    } catch (err) {
-      return { error: "Network error. Please check your connection." };
-    }
-  };
+    } catch (err: any) {
+  console.error("[Auth] signUp error:", err?.message, err?.code);
+  return { error: `Network error: ${err?.message || "check connection"}` };
+}
 
   const signIn = async (email: string, password: string) => {
     try {
