@@ -50,6 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
+      console.log("[Auth] signUp URL:", `${API_BASE}/api/auth/signup`);
       const res = await fetch(`${API_BASE}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -67,12 +68,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       return { error: null };
     } catch (err: any) {
-  console.error("[Auth] signUp error:", err?.message, err?.code);
-  return { error: `Network error: ${err?.message || "check connection"}` };
-}
+      console.error("[Auth] signUp network error:", err?.message, err?.code);
+      return { error: `Network error: ${err?.message || "check connection"}` };
+    }
+  };
 
   const signIn = async (email: string, password: string) => {
     try {
+      console.log("[Auth] signIn URL:", `${API_BASE}/api/auth/signin`);
       const res = await fetch(`${API_BASE}/api/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,9 +93,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       return { error: null };
     } catch (err: any) {
-  console.error("[Auth] signIn error:", err?.message, err?.code);
-  return { error: `Network error: ${err?.message || "check connection"}` };
-}
+      console.error("[Auth] signIn network error:", err?.message, err?.code);
+      return { error: `Network error: ${err?.message || "check connection"}` };
+    }
+  };
 
   const signOut = async () => {
     try {
