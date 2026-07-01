@@ -35,7 +35,9 @@ const SUGGESTED = [
   "How do I reduce churn below 2%?",
 ];
 
-const API_BASE = `https://${process.env.EXPO_PUBLIC_DOMAIN}`;
+const _DOMAIN = process.env.EXPO_PUBLIC_DOMAIN;
+if (!_DOMAIN) console.error("[Chat] EXPO_PUBLIC_DOMAIN not set — API calls will fail");
+const API_BASE = `https://${_DOMAIN || "undefined"}`;
 
 const SURVEY_LABELS: Record<number, string> = {
   1: "Primary goal",
@@ -157,14 +159,22 @@ You are a world-class business advisor with deep expertise in startup strategy, 
       const { data: sessionData } = await supabase.auth.getSession();
       const accessToken = sessionData?.session?.access_token ?? "";
 
-      const response = await fetch(`${API_BASE}/api/chat`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-        },
-        body: JSON.stringify({ messages: openaiMessages }),
-      });
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+      let response: Response;
+      try {
+        response = await fetch(`${API_BASE}/api/chat`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+          },
+          body: JSON.stringify({ messages: openaiMessages }),
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
 
       const data = await response.json();
       let reply: string;
