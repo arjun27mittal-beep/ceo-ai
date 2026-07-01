@@ -2,7 +2,11 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Session, User } from "@supabase/supabase-js";
 
-const API_BASE = `https://${process.env.EXPO_PUBLIC_DOMAIN}`;
+const DOMAIN = process.env.EXPO_PUBLIC_DOMAIN;
+if (!DOMAIN) {
+  console.error("[Auth] EXPO_PUBLIC_DOMAIN is not set — API_BASE will be invalid");
+}
+const API_BASE = `https://${DOMAIN || "undefined"}`;
 
 interface AuthContextType {
   session: Session | null;
@@ -69,7 +73,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error: null };
     } catch (err: any) {
       console.error("[Auth] signUp network error:", err?.message, err?.code);
-      return { error: `Network error: ${err?.message || "check connection"}` };
+      const msg = err?.message || "";
+      if (msg.includes("Network request failed")) {
+        return { error: "Can't reach server. Check internet or app config (EXPO_PUBLIC_DOMAIN)." };
+      }
+      return { error: `Network error: ${msg || "check connection"}` };
     }
   };
 
@@ -94,7 +102,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error: null };
     } catch (err: any) {
       console.error("[Auth] signIn network error:", err?.message, err?.code);
-      return { error: `Network error: ${err?.message || "check connection"}` };
+      const msg = err?.message || "";
+      if (msg.includes("Network request failed")) {
+        return { error: "Can't reach server. Check internet or app config (EXPO_PUBLIC_DOMAIN)." };
+      }
+      return { error: `Network error: ${msg || "check connection"}` };
     }
   };
 
