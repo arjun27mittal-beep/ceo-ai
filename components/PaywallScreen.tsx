@@ -55,7 +55,7 @@ export default function PaywallScreen({ onSuccess }: Props) {
       return;
     }
 
-    if (__DEV__ || Platform.OS === "web") {
+    if (Platform.OS === "web") {
       Alert.alert(
         "Test Purchase",
         `Confirm test purchase of ${pkg.product.title} for ${pkg.product.priceString}?`,
