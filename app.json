@@ -13,24 +13,25 @@
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
-"ios": {
-  "supportsTablet": false,
-  "bundleIdentifier": "com.ceoai.ios",
-  "infoPlist": {
-    "NSAppTransportSecurity": {
-      "NSExceptionDomains": {
-        "monochrome-ledger.replit.app": {
-          "NSExceptionMinimumTLSVersion": "TLSv1.2",
-          "NSExceptionRequiresForwardSecrecy": false
-        },
-        "naodvygilgdefdjcmcuf.supabase.co": {
-          "NSExceptionMinimumTLSVersion": "TLSv1.2",
-          "NSExceptionRequiresForwardSecrecy": false
+    "ios": {
+      "supportsTablet": false,
+      "buildNumber": "12",
+      "bundleIdentifier": "com.ceoai.ios",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "monochrome-ledger.replit.app": {
+              "NSExceptionMinimumTLSVersion": "TLSv1.2",
+              "NSExceptionRequiresForwardSecrecy": false
+            },
+            "naodvygilgdefdjcmcuf.supabase.co": {
+              "NSExceptionMinimumTLSVersion": "TLSv1.2",
+              "NSExceptionRequiresForwardSecrecy": false
+            }
+          }
         }
       }
-    }
-  }
-},
+    },
     "android": {
       "package": "com.ceoai.android",
       "adaptiveIcon": {
